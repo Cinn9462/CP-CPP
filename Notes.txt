@@ -1,0 +1,133 @@
+-----C++ headers-----
+#include <bits/stdc++.h> // inlcudes libraries
+using namespace std; // defaults everything to std, don't need to 
+int main() { // main method
+    ios::sync_with_stdio(0); cin.tie(0); // speeds up input and output
+}
+
+-----Input/output-----
+cin >> var1 >> var2; // >> reads the next input (seperated by spaces, tabs, or newlines)
+cout << var1 << var2; // << outputs both variables without seperation
+
+ifstream fin ("file.in");
+ofstream fout ("file.out");
+fin is equivalent to cin
+fout is equivalent to cout
+
+-----Data structures-----
+*Basic data types*
+Syntax same as Java
+int, double, bool, string
+auto keyword automatically classifies the variable based on its assigned type
+
+*References & Pointers*
+int& a = b; (reference)
+int* a = &b; (pointer)
+
+*a refers to the reference, a refers to the pointer
+
+*Strings*
+Only concatenate two strings
+.size() and .length() both work
+
+*Arrays*
+array<datatype, size> arr;
+.size()
+
+*Vectors*
+vector<datatype> vect;
+.resize()
+.front(), .back()
+at() = [], prefered because it includes errors
+.push_back() = .append()
+.pop_back() = pop(len - 1)
+.empty()
+
+*Stacks*
+stack<datatype> stack;
+.push() 
+.top()
+.pop()
+
+*Queues*
+queue<datatype> queue;
+.push()
+.front()
+.back()
+.pop()
+
+*Deque*
+deque<datatype> deque;
+.push_front() and .push_back()
+.pop_front() and .pop_back()
+
+*Sets*
+sets default sorted, multiset stores multiple of the same instance, log(n) operation time
+unordered_sets unsorted, constant operation time
+
+set(datatype) set;
+.insert()
+.erase()
+.find()
+
+*Maps* 
+map<datatype key, datatype value> dict;
+.at(), .insert({key, value})
+.erase()
+
+*Pair*
+pair<datatype, datatype> pair;
+.first, .second
+
+unpacking can be done in c++
+auto [x, y] = (something that returns a pair)
+
+*Iterators*
+auto it = (some iterator, actual datatype is messy)
+use *it to refer to actual element
+iterator arithmetic exists, but no out of bounds checking
+
+auto diff = distance(iterator1, iterator2)
+
+*Algorithms*
+sort(vector.begin(), vector.end())
+upper_bound(vector.begin(), vector.end(), x) searches for first element greater than x
+lower_bound(vector.begin(), vector.end(), x) seraches for the last element that isn't greater than x
+
+-----Loops-----
+Syntax same as Java
+*Switch*
+break and default are optional, no break is equivalent to multiple if statements
+switch(expression) {
+  case x:
+    // code block
+    break;
+  case y:
+    // code block
+    break;
+  default:
+    // code block
+}
+
+-----Classes-----
+*Strucutres*
+Similar to class, default public access for variables
+Variables can be initialized with lists
+Stores variables together for ease of access, no overhead
+
+
+-----Fuctions-----
+returnType functionName(dataType param1, datType param2) {
+  return returnType;
+}
+
+You can pass references to change data values
+
+auto lambda [](dataType param1, dataType param2) {return res;};
+
+[] is capture list
+  [x] captures x by value
+  [&x] captures x by reference
+  [=] captures all by value
+  [&] captures all by reference
+  [=, &x] captures all by value except x by reference
