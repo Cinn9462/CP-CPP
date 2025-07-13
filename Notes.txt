@@ -65,7 +65,7 @@ deque<datatype> deque;
 sets default sorted, multiset stores multiple of the same instance, log(n) operation time
 unordered_sets unsorted, constant operation time
 
-set(datatype) set;
+set<datatype> set;
 .insert()
 .erase()
 .find()
