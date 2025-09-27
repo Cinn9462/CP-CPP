@@ -68,7 +68,8 @@ unordered_sets unsorted, constant operation time
 set<datatype> set;
 .insert()
 .erase()
-.find()
+.find() // Iterator to the element's position
+.count() // 1 if present, else 0
 
 *Maps* 
 map<datatype key, datatype value> dict;
