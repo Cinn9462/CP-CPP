@@ -1,65 +1,44 @@
 #define ll long long
 #define pb push_back 
 #define len(x) (ll)x.size()
-#define Qsort(x) sort(x.begin(), x.end())
 #define fileread(file) ifstream fin; fin.open((string)file + ".in"); ofstream fout; fout.open((string)file + ".out")
 #define NL "\n"
 #define INF 1000000000000000000
 #define inf 1000000001
-#define VTS(v) ([](auto&& ___c){ cout << "["; for (auto ____i = begin(___c); ____i != end(___c); ++____i) cout << (____i != begin(___c) ? ", " : "") << *____i; cout << "]\n"; })(v) // only for 1D arrays
 #define MP(x, y) make_pair(x, y)
+#define fileread(file) ifstream fin; fin.open((string)file + ".in"); ofstream fout; fout.open((string)file + ".out")
 
 #include <bits/stdc++.h>
 using namespace std;
 
 int main() {
     ios::sync_with_stdio(0); cin.tie(0);
-    fileread("balancing");
+    fileread("div7");
 
-    // Input
-    ll N; fin >> N;
-    vector<pair<ll, ll>> points;
-    set<ll> unique_x, unique_y;
+    ll N; fin >> N; 
 
+    ll id;
+    vector<ll> ids;
     for (ll i = 0; i < N; i++) {
-        ll x, y; fin >> x >> y;
-        unique_x.insert(x);
-        unique_y.insert(y);
-        points.pb(MP(x, y));
+        fin >> id; 
+        ids.pb(id % 7);
     }
 
-    vector<ll> above, below;
-    ll min_points = INF;
+    vector<ll> prefix_array; prefix_array.pb(ids[0]);
+    for (ll i = 1; i < N; i++) {
+        prefix_array.pb((prefix_array[i - 1] + ids[i]) % 7);
+    }
 
-    for (ll y : unique_y) {
-        // Sort points into points above and below the y line
-        above.clear(); below.clear();
-        for (auto &point : points) {
-            if (point.second > y - 1) {
-                above.pb(point.first);
-            }
-            else {
-                below.pb(point.first);
-            }
+    map<ll, ll> m;
+    m[0] = -1;
+    ll max_dist = 0;
+    for (ll i = 0; i < N; i++) {
+        if (m.find(prefix_array[i]) == m.end()) {
+            m[prefix_array[i]] = i;
         }
-
-        Qsort(above); Qsort(below);
-
-        // Iterate through x points
-
-        ll above_index = 0, below_index = 0;
-
-        for (ll x : unique_x) {
-            while (above_index < len(above) && above[above_index] < x - 1) {
-                above_index++;
-            }
-            
-            while (below_index < len(below) && below[below_index] < x - 1) {
-                below_index++;
-            }
-
-            min_points = min(max({above_index, below_index, len(above) - above_index, len(below) - below_index}), min_points);       
+        else {
+            max_dist = max(max_dist, i - m.at(prefix_array[i]));
         }
     }
-    fout << min_points << NL;
+    fout << max_dist << NL;
 }
