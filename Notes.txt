@@ -93,7 +93,7 @@ auto diff = distance(iterator1, iterator2)
 *Algorithms*
 sort(vector.begin(), vector.end())
 upper_bound(vector.begin(), vector.end(), x) searches for first element greater than x
-lower_bound(vector.begin(), vector.end(), x) seraches for the last element that isn't greater than x
+lower_bound(vector.begin(), vector.end(), x) searches for the first element greater than or equal to x
 
 -----Loops-----
 Syntax same as Java

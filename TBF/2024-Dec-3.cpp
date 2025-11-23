@@ -2,8 +2,6 @@
 #define pb push_back 
 #define v vector
 #define fileread(file) ifstream fin; fin.open((string)file + ".in"); ofstream fout; fout.open((string)file + ".out")
-#define INF 1000000000000000000
-#define inf 1000000001
 #define MP(x, y) make_pair(x, y)
 #define F first
 #define S second
@@ -21,4 +19,31 @@ ostream& operator<<(ostream& os, v<ll>& arr) {
         os << ___a << " ";
     }
     return os;
+}
+
+struct Point{
+    ll, x, y, f; // 0 = ?, 1 = U, 2 = D, 3 = L, 4 = R
+    Point(ll _x, ll _y, ll _f) : x(_x), y(_y), f(_f) {}
+};
+
+int main() {
+    ll grid_size, num_queries;
+
+    vector<Point> points;
+    ll _x, _y;
+    char _f;
+    For(i, num_queries) {
+        cin >> _x >> _y >> _f;
+        if (_f == "?") {
+                        
+        } else if (_f == "U") {
+            
+        } else if (_f == "D") {
+            
+        } else if (_f == "L") {
+            
+        } else if (_f == "R") {
+            
+        } 
+    }
 }
