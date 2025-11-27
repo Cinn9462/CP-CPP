@@ -22,10 +22,12 @@ ostream& operator<<(ostream& os, v<ll>& arr) {
 }
 
 int main() {
-    ll num_cows; 
-    cin >> num_cows; // same as # species
+    ios::sync_with_stdio(0); cin.tie(0);
 
-    vector<ll> position;
+    ll num_cows; 
+    cin >> num_cows;
+
+    v<ll> position;
     
     ll _p;
     For (i, num_cows) {
@@ -33,69 +35,68 @@ int main() {
         position.pb(_p - 1);
     }
 
-    vector<vector<ll>> ideal; // ideal[species] = [locations]
-    ideal.resize(num_cows);
+
+    v<ll> ideal;
 
     For (i, num_cows) {
         cin >> _p;
-        ideal[_p - 1].pb(i);
+        ideal.pb(_p - 1);
     }
 
-    // for(vector<ll> arr : ideal) {
-    //     cout << arr << endl;
-    // } 
+    unordered_map<ll, v<ll>> edge;
 
-    vector<vector<ll>> edge; // edge[species] = [distance to edges]
-    edge.resize(num_cows);
     For(i, num_cows) {
-        for (ll pos : ideal[i]) {
-            edge[i].pb(min(pos + 1, num_cows - pos));
+        
+        if (edge.count(ideal[i]) == 0) {
+            v<ll> new_edge = {min(i + 1, num_cows - i)};
+            edge.insert(MP(ideal[i], new_edge));
         }
 
-        sort(edge[i].begin(), edge[i].end());
-    }
-
-    // for(vector<ll> arr : edge) {
-    //     cout << arr << endl;
-    // } 
-
-    vector<vector<ll>> prefix; // prefix[species] = [prefix array of edges squared]
-    prefix.resize(num_cows);
-
-    For(i, num_cows) {
-        prefix[i].pb(0);
-        for (ll pos : edge[i]) {
-            prefix[i].pb(prefix[i].back() + pos);
+        else {
+            edge.at(ideal[i]).pb(min(i + 1, num_cows - i));
         }
     }
 
-    // for(vector<ll> arr : prefix) {
-    //     cout << arr << endl;
-    // }
+    unordered_map<ll, v<ll>> prefix;
+
+    for (auto [species, edge_pos] : edge) {
+        sort(edge_pos.begin(), edge_pos.end());
+        cout << species << "-" << edge_pos << endl;
+
+        v<ll> new_prefix = {0};
+        for (ll pos : edge_pos) {
+            new_prefix.pb(new_prefix.back() + pos);
+        }
+
+        prefix.insert(MP(species, new_prefix));
+    }
 
     // Iterate by cow
     ll ans = 0;
 
     For (i, num_cows) { // i denotes position, position[i] denotes species
 
-        if (count(ideal[position[i]].begin(), ideal[position[i]].end(), i) > 0) {
+        cout << "Current cow at "  << i << " with species " << position[i] << endl;
+
+        if (position[i] == ideal[i]) {
             ans += ((i + 1) * i)/2;
             ans += (num_cows - i - 1) * (num_cows - i) / 2;
-            //  cout << ((i + 1) * i)/2 << " " << (num_cows - i - 1) * (num_cows - i) / 2 << endl;
         }
 
 
         ll curr_dist = min(i + 1, num_cows - i);
-        ll index = upper_bound(edge[position[i]].begin(), edge[position[i]].end(), curr_dist) - edge[position[i]].begin();
+
+        cout << "Current distance to edge: " << curr_dist; 
+
+        ll index = upper_bound(edge.at(position[i]).begin(), edge.at(position[i]).end(), curr_dist) - edge.at(position[i]).begin();
 
         // cout << edge[position[i]] << endl;
-        // cout << index << endl;
+        cout << index << endl;
 
+        ans += prefix.at(position[i])[index];
+        ans += curr_dist * (edge.at(position[i]).size() - index);
 
-        ans += prefix[position[i]][index];
-        ans += curr_dist * (ideal[position[i]].size() - index);
-
-        // cout << "Total countributions: " << ans << endl;
+        cout << "Total countributions: " << ans << endl;
     }
 
     cout << ans << endl;
