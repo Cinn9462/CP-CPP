@@ -83,6 +83,7 @@ int main() {
             ans += (num_cows - i - 1) * (num_cows - i) / 2;
         }
 
+        
 
         ll curr_dist = min(i + 1, num_cows - i);
 
