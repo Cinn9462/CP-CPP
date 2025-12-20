@@ -23,12 +23,6 @@ ostream& operator<<(ostream& os, v<ll>& arr) {
     return os;
 }
 
-/*
-Maps 
-map<datatype key, datatype value> dict;
-.at(), .insert({key, value})
-.erase()
-*/
 
 int main() {
     ios::sync_with_stdio(0); cin.tie(0);

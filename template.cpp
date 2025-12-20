@@ -1,6 +1,7 @@
 #define ll long long
 #define pb push_back 
 #define v vector
+#define p pair
 #define fileread(file) ifstream fin; fin.open((string)file + ".in"); ofstream fout; fout.open((string)file + ".out")
 #define INF 1000000000000000000
 #define inf 1000000001
@@ -9,6 +10,7 @@
 #define S second
 #define For(i, end) for (ll i = 0; i < end; i++)
 #define f0r(i, begin, end) for (ll i = begin; i < end; i++) 
+#define NL "\n"
 
 #include <bits/stdc++.h>
 using namespace std;
@@ -25,7 +27,5 @@ ostream& operator<<(ostream& os, v<ll>& arr) {
 
 int main() {
     ios::sync_with_stdio(0); cin.tie(0);
-
-
 
 }

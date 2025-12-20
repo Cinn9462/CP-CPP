@@ -32,7 +32,7 @@ int main() {
     ll _p;
     For (i, num_cows) {
         cin >> _p; 
-        position.pb(_p - 1);
+        position.pb(_p);
     }
 
 
@@ -40,7 +40,7 @@ int main() {
 
     For (i, num_cows) {
         cin >> _p;
-        ideal.pb(_p - 1);
+        ideal.pb(_p);
     }
 
     unordered_map<ll, v<ll>> edge;
@@ -59,45 +59,50 @@ int main() {
 
     unordered_map<ll, v<ll>> prefix;
 
-    for (auto [species, edge_pos] : edge) {
+    for (auto &[species, edge_pos] : edge) {
         sort(edge_pos.begin(), edge_pos.end());
-        cout << species << "-" << edge_pos << endl;
+        // cout << species << "-" << edge_pos << endl;
 
         v<ll> new_prefix = {0};
-        for (ll pos : edge_pos) {
+        for (ll &pos : edge_pos) {
             new_prefix.pb(new_prefix.back() + pos);
         }
 
         prefix.insert(MP(species, new_prefix));
     }
 
+
     // Iterate by cow
     ll ans = 0;
 
     For (i, num_cows) { // i denotes position, position[i] denotes species
 
-        cout << "Current cow at "  << i << " with species " << position[i] << endl;
+        // cout << "Current cow at "  << i << " with species " << position[i] << endl;
+
+        if (edge.count(position[i]) == 0) {
+            continue;
+        }
 
         if (position[i] == ideal[i]) {
-            ans += ((i + 1) * i)/2;
-            ans += (num_cows - i - 1) * (num_cows - i) / 2;
+            ans += ((i - 1) * i)/2;
+            ans += (num_cows - i) * (num_cows - i + 1) / 2;
         }
 
         
 
         ll curr_dist = min(i + 1, num_cows - i);
 
-        cout << "Current distance to edge: " << curr_dist; 
+        // cout << "Current distance to edge: " << curr_dist << endl; 
 
         ll index = upper_bound(edge.at(position[i]).begin(), edge.at(position[i]).end(), curr_dist) - edge.at(position[i]).begin();
 
-        // cout << edge[position[i]] << endl;
-        cout << index << endl;
+        // cout << edge.at(position[i]) << endl;
+        // cout << index << endl;
 
         ans += prefix.at(position[i])[index];
         ans += curr_dist * (edge.at(position[i]).size() - index);
 
-        cout << "Total countributions: " << ans << endl;
+        // cout << "Total countributions: " << ans << endl;
     }
 
     cout << ans << endl;
