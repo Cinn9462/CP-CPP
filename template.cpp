@@ -10,13 +10,14 @@
 #define S second
 #define For(i, end) for (ll i = 0; i < end; i++)
 #define f0r(i, begin, end) for (ll i = begin; i < end; i++) 
-#define NL "\n"
+#define nl "\n"
+#define ss " "
 
 #include <bits/stdc++.h>
 using namespace std;
 
 ostream& operator<<(ostream& os, pair<ll, ll>& p) {
-    return os << p.F << " " << p.S;
+    return os << "[" << p.F << " " << p.S << "]";
 }
 ostream& operator<<(ostream& os, v<ll>& arr) {
     for (ll ___a : arr) {
