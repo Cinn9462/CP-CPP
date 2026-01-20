@@ -2,7 +2,7 @@
 #define pb push_back 
 #define v vector
 #define p pair
-#define fileread(file) ifstream fin; fin.open((string)file + ".in"); ofstream fout; fout.open((string)file + ".out")
+#define fileread(file) freopen(((string) file + ".in").c_str(), "r", stdin); freopen(((string) file + ".out").c_str(), "w", stdout)
 #define INF 1000000000000000000
 #define inf 1000000001
 #define MP(x, y) make_pair(x, y)
@@ -12,6 +12,8 @@
 #define f0r(i, begin, end) for (ll i = begin; i < end; i++) 
 #define nl "\n"
 #define ss " "
+#define un_map unordered_map
+#define un_set unordered_set
 
 #include <bits/stdc++.h>
 using namespace std;
@@ -26,7 +28,12 @@ ostream& operator<<(ostream& os, v<ll>& arr) {
     return os;
 }
 
+struct PairHash {
+    size_t operator()(const pair<ll,ll>& p) const {
+        return hash<ll>()(p.F) ^ (hash<ll>()(p.S) << 1);
+    }
+};
+
 int main() {
     ios::sync_with_stdio(0); cin.tie(0);
-
 }
