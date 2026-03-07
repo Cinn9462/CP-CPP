@@ -41,5 +41,26 @@ struct PairHash {
 
 int main() {
     ios::sync_with_stdio(0); cin.tie(0);
+    int N; cin >> N;
+    v<ll> nums(N);
+    For(i, N) {
+        cin >> nums[i];
+        nums[i] %= N;
+        nums[i] += N;
+        nums[i] %= N;
+    }
 
+    v<ll> prefix(N + 1, 0);
+    f0r(i, 1, N + 1) {
+        prefix[i] = (prefix[i - 1] + nums[i - 1]) % N;
+    }
+
+    map<ll, ll> remainder;
+    ll count = 0;
+    for (ll n : prefix) {
+        count += remainder[n];
+        remainder[n]++;
+    }
+
+    cout << count;
 }

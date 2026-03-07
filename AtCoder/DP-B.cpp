@@ -9,8 +9,7 @@
 #define F first
 #define S second
 #define For(i, end) for (ll i = 0; i < end; i++)
-#define roF(i, start) for (ll i = start; i >= 0; i--)
-#define FOR(i, begin, end) for (ll i = begin; i < end; i++) 
+#define f0r(i, begin, end) for (ll i = begin; i < end; i++) 
 #define nl "\n"
 #define ss " "
 #define un_map unordered_map
@@ -28,7 +27,12 @@ ostream& operator<<(ostream& os, v<ll>& arr) {
     }
     return os;
 }
-
+ostream& operator<<(ostream& os, deque<ll>& arr) {
+    for (ll ___a : arr) {
+        os << ___a << " ";
+    }
+    return os;
+}
 struct PairHash {
     size_t operator()(const pair<ll,ll>& p) const {
         return hash<ll>()(p.F) ^ (hash<ll>()(p.S) << 1);
@@ -37,6 +41,24 @@ struct PairHash {
 
 int main() {
     ios::sync_with_stdio(0); cin.tie(0);
+    ll N; cin >> N;
+    ll K; cin >> K;
 
-    
+    v<ll> cost(N);
+    For(i, N) {
+        cin >> cost[i];
+    }
+
+    v<ll> dp(N, LLONG_MAX);
+    dp[0] = 0;
+
+    For(i, N ) {
+        For (j, K + 1) {
+            if (i + j < N) {
+                dp[i + j] = min(dp[i + j], dp[i] + abs(cost[i] - cost[i + j]));
+            }
+        }
+    }
+
+    cout << dp[N - 1];
 }

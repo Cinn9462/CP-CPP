@@ -9,16 +9,15 @@
 #define F first
 #define S second
 #define For(i, end) for (ll i = 0; i < end; i++)
-#define roF(i, start) for (ll i = start; i >= 0; i--)
-#define FOR(i, begin, end) for (ll i = begin; i < end; i++) 
+#define f0r(i, begin, end) for (ll i = begin; i < end; i++) 
 #define nl "\n"
 #define ss " "
 #define un_map unordered_map
 #define un_set unordered_set
-
+ 
 #include <bits/stdc++.h>
 using namespace std;
-
+ 
 ostream& operator<<(ostream& os, pair<ll, ll>& p) {
     return os << "[" << p.F << " " << p.S << "]";
 }
@@ -28,15 +27,40 @@ ostream& operator<<(ostream& os, v<ll>& arr) {
     }
     return os;
 }
-
+ostream& operator<<(ostream& os, deque<ll>& arr) {
+    for (ll ___a : arr) {
+        os << ___a << " ";
+    }
+    return os;
+}
 struct PairHash {
     size_t operator()(const pair<ll,ll>& p) const {
         return hash<ll>()(p.F) ^ (hash<ll>()(p.S) << 1);
     }
 };
-
+ 
 int main() {
     ios::sync_with_stdio(0); cin.tie(0);
-
-    
+    int N; cin >> N;
+    v<ll> nums(N);
+    For(i, N) {
+        cin >> nums[i];
+        nums[i] %= N;
+        nums[i] += N;
+        nums[i] %= N;
+    }
+ 
+    v<ll> prefix(N + 1, 0);
+    f0r(i, 1, N + 1) {
+        prefix[i] = (prefix[i - 1] + nums[i - 1]) % N;
+    }
+ 
+    map<ll, ll> remainder;
+    ll count = 0;
+    for (ll n : prefix) {
+        count += remainder[n];
+        remainder[n]++;
+    }
+ 
+    cout << count;
 }

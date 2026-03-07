@@ -19,9 +19,6 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-ostream& operator<<(ostream& os, pair<ll, ll>& p) {
-    return os << "[" << p.F << " " << p.S << "]";
-}
 ostream& operator<<(ostream& os, v<ll>& arr) {
     for (ll ___a : arr) {
         os << ___a << " ";
@@ -29,14 +26,26 @@ ostream& operator<<(ostream& os, v<ll>& arr) {
     return os;
 }
 
-struct PairHash {
-    size_t operator()(const pair<ll,ll>& p) const {
-        return hash<ll>()(p.F) ^ (hash<ll>()(p.S) << 1);
-    }
-};
-
 int main() {
     ios::sync_with_stdio(0); cin.tie(0);
 
-    
+    ll N, W; cin >> N >> W;
+    v<ll> weights(N + 1), values(N + 1);
+
+    For(i, N) {
+        cin >> weights[i + 1] >> values[i + 1];
+    }
+
+    v<ll> dp(W + 1, 0); // each value is max value achievable at that weight after n items
+
+    FOR(i, 1, N + 1) { // i is the ith object is able to be added
+
+        roF(j, W) { // j is the weight observed
+            if (j - weights[i] >= 0) {
+                dp[j] = max(dp[j - weights[i]] + values[i], dp[j]);
+            }
+        }
+    }
+
+    cout << *max_element(dp.begin(), dp.end());
 }

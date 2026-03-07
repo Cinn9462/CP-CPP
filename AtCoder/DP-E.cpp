@@ -19,9 +19,6 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-ostream& operator<<(ostream& os, pair<ll, ll>& p) {
-    return os << "[" << p.F << " " << p.S << "]";
-}
 ostream& operator<<(ostream& os, v<ll>& arr) {
     for (ll ___a : arr) {
         os << ___a << " ";
@@ -29,14 +26,32 @@ ostream& operator<<(ostream& os, v<ll>& arr) {
     return os;
 }
 
-struct PairHash {
-    size_t operator()(const pair<ll,ll>& p) const {
-        return hash<ll>()(p.F) ^ (hash<ll>()(p.S) << 1);
-    }
-};
 
 int main() {
     ios::sync_with_stdio(0); cin.tie(0);
 
-    
+    ll N, W; cin >> N >> W;
+
+    v<ll> weights(N + 1), values(N + 1);
+
+    For(i, N) {
+        cin >> weights[i + 1] >> values[i + 1];
+    }
+
+    v<ll> dp(accumulate(values.begin(), values.end(), 0) + 1, 1e11 + 1);
+    dp[0] = 0;
+
+    FOR(i, 1, N + 1) {
+        roF(j, (ll) dp.size() - 1) {
+            if (j - values[i] >= 0) {
+                dp[j] = min(dp[j], dp[j - values[i]] + weights[i]);
+            }
+        }
+    }
+
+    roF(i, (ll) dp.size() - 1) {
+        if (dp[i] <= W) {
+            cout << i; break;
+        }
+    }
 }
