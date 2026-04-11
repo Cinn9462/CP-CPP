@@ -27,32 +27,25 @@ ostream& operator<<(ostream& os, v<ll>& arr) {
 }
 
 int main() {
-    ios::sync_with_stdio(0); cin.tie(0);
-    string s1, s2; cin >> s1 >> s2;
-    v<v<int>> dp(s1.size() + 1, v<int>(s2.size() + 1, 0));
-
-    FOR (i, 1, s1.size() + 1) {
-        FOR (j, 1, s2.size() + 1) {
-            dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
-            if (s1[i - 1] == s2[j - 1]) {
-                dp[i][j] = max(dp[i][j], dp[i - 1][j - 1] + 1);
-            }
-        }
+    ll H, W;
+    cin >> H >> W;
+    v<string> grid(H);
+    For(i, H) {
+        cin >> grid[i];
     }
 
-    string sub = "";
-    int i = s1.size();
-    int j = s2.size();
-    while (i > 0 && j > 0) {
-        if (s1[i - 1] == s2[j - 1]) {
-            sub += s1[i - 1];
-            i--; j--;
+    v<v<ll>> dp(H + 1, v<ll>(W + 1, 0));
+    For (i, H) {
+        For (j, W) {
+            if (grid[i][j] == '.') dp[i + 1][j + 1] = (dp[i][j + 1] + dp[i + 1][j]) % (ll) (1e9 + 7);
+            if (grid[i][j] == '#') dp[i + 1][j + 1] = 0;
+            if (i == 0 && j == 0) dp[i + 1][j+ 1] = 1;
         }
-        else if (dp[i][j - 1] < dp[i - 1][j]) i--;
-        else j--;
     }
-
-    reverse(sub.begin(), sub.end());
     
-    cout << sub << nl;
+    // for (auto row : dp) {
+    //     cout << row << nl;
+    // }
+
+    cout << dp[H][W] % (ll) (1e9 + 7) << nl;
 }

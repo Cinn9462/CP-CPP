@@ -27,32 +27,20 @@ ostream& operator<<(ostream& os, v<ll>& arr) {
 }
 
 int main() {
-    ios::sync_with_stdio(0); cin.tie(0);
-    string s1, s2; cin >> s1 >> s2;
-    v<v<int>> dp(s1.size() + 1, v<int>(s2.size() + 1, 0));
+    ll N, K; cin >> N >> K;
+    v<ll> ops(N);
+    For(i, N) {
+        cin >> ops[i];
+    }
 
-    FOR (i, 1, s1.size() + 1) {
-        FOR (j, 1, s2.size() + 1) {
-            dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
-            if (s1[i - 1] == s2[j - 1]) {
-                dp[i][j] = max(dp[i][j], dp[i - 1][j - 1] + 1);
+    v<bool> dp(K + 1, false); // game state if current turn
+    For(i, K + 1) {
+        if (!dp[i]) {
+            for (ll op : ops) {
+                if (i + op <= K) dp[i + op] = !dp[i];
             }
         }
     }
 
-    string sub = "";
-    int i = s1.size();
-    int j = s2.size();
-    while (i > 0 && j > 0) {
-        if (s1[i - 1] == s2[j - 1]) {
-            sub += s1[i - 1];
-            i--; j--;
-        }
-        else if (dp[i][j - 1] < dp[i - 1][j]) i--;
-        else j--;
-    }
-
-    reverse(sub.begin(), sub.end());
-    
-    cout << sub << nl;
+    cout << (dp[K] ? "First" : "Second") << nl;
 }

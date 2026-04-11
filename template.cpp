@@ -30,8 +30,18 @@ ostream& operator<<(ostream& os, v<ll>& arr) {
 }
 
 struct PairHash {
-    size_t operator()(const pair<ll,ll>& p) const {
-        return hash<ll>()(p.F) ^ (hash<ll>()(p.S) << 1);
+    size_t operator()(const p<ll, ll>& p) const {
+        uint64_t x = p.first, y = p.second;
+        x += 0x9e3779b97f4a7c15;
+        y += 0x9e3779b97f4a7c15;
+
+        x = (x ^ (x >> 30)) * 0xbf58476d1ce4e5b9;
+        y = (y ^ (y >> 30)) * 0xbf58476d1ce4e5b9;
+
+        x ^= (x >> 27);
+        y ^= (y >> 27);
+
+        return x ^ (y << 1);
     }
 };
 

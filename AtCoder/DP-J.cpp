@@ -28,31 +28,33 @@ ostream& operator<<(ostream& os, v<ll>& arr) {
 
 int main() {
     ios::sync_with_stdio(0); cin.tie(0);
-    string s1, s2; cin >> s1 >> s2;
-    v<v<int>> dp(s1.size() + 1, v<int>(s2.size() + 1, 0));
 
-    FOR (i, 1, s1.size() + 1) {
-        FOR (j, 1, s2.size() + 1) {
-            dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
-            if (s1[i - 1] == s2[j - 1]) {
-                dp[i][j] = max(dp[i][j], dp[i - 1][j - 1] + 1);
-            }
-        }
+    ll N; cin >> N;
+    v<ll> count(4, 0);
+    ll idx;
+    For(i, N) {
+        cin >> idx;
+        count[idx]++;
     }
 
-    string sub = "";
-    int i = s1.size();
-    int j = s2.size();
-    while (i > 0 && j > 0) {
-        if (s1[i - 1] == s2[j - 1]) {
-            sub += s1[i - 1];
-            i--; j--;
-        }
-        else if (dp[i][j - 1] < dp[i - 1][j]) i--;
-        else j--;
-    }
+    v<v<v<double>>> dp(301, v<v<double>>(301, v<double>(301, 0)));
 
-    reverse(sub.begin(), sub.end());
-    
-    cout << sub << nl;
+    auto dfs = [&](auto& self, ll x, ll y, ll z) -> double {
+        if (x < 0 || y < 0 || z < 0) {
+            return 0;
+        }
+
+        if (x == 0 && y == 0 && z == 0) {
+            return 0;
+        }
+
+        if (dp[x][y][z]) {
+            return dp[x][y][z];
+        }
+
+        dp[x][y][z] = (double) (N + x * self(self, x - 1, y, z) + y * self(self, x + 1, y - 1, z) + z * self(self, x, y + 1, z - 1)) / (x + y + z);
+        return dp[x][y][z];
+    };
+
+    cout << fixed << setprecision(10) << dfs(dfs, count[1], count[2], count[3]);
 }

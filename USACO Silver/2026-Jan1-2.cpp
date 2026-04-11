@@ -83,3 +83,55 @@ int main() {
 
     cout << impossible << nl << limit_lb << nl << limit_ub;
 }
+
+// void dfs(map<ll, p<ll, ll>>& queue, v<Node>& rods, un_set<ll>& visited, ll depth, ll rod_num, ll modifier, ll r_ID, bool same) {
+
+//     if (visited.count(r_ID) > 0 || rods[rod_num].count == 0) {
+//         return;
+//     }
+
+//     cout << "DFS: " << depth << ss << rod_num << ss << r_ID << nl;
+
+//     visited.insert(r_ID);
+    
+//     ll r_modifier = (depth % 2 == 0) ? -1 : 1;  
+
+
+//     ll start = min(modifier - r_modifier * rods[rod_num].l, modifier - r_modifier * rods[rod_num].r);
+//     ll end = max(modifier - r_modifier * rods[rod_num].l, modifier - r_modifier * rods[rod_num].r);
+
+//     if (same) {
+//         start = 
+//     }
+
+//     if (queue.count(rod_num) > 0) {
+//         ll new_start = max(queue[rod_num].F, start);
+//         ll new_end = min(queue[rod_num].S, end);
+
+//         cout << queue[rod_num] << ss << start << ss << end << nl;
+
+//         if (new_end < new_start) {
+//             flag = true;
+//             return;
+//         }
+
+//         queue[rod_num] = {new_start, new_end};
+//     }
+
+//     else if (depth > 0){
+//         queue.insert({rod_num, {start, end}});
+//         For(i, rods[rod_num].count) {
+//             if (rods[rod_num].edges[i] == rod_num && (rods[rod_num].weights[i] % 2 == 1)) {
+//                 flag = true;
+//             }
+
+//             dfs(queue, rods, visited, depth + 1, rods[rod_num].edges[i], modifier - r_modifier * rods[rod_num].weights[i], rods[rod_num].restrictionIDs[i], rods[rod_num].edges[i] == rod_num);
+//         }
+//     }
+//     else {
+//         For(i, rods[rod_num].count) {
+//             dfs(queue, rods, visited, depth + 1, rods[rod_num].edges[i], modifier - r_modifier * rods[rod_num].weights[i], rods[rod_num].restrictionIDs[i], rods[rod_num].edges[i] == rod_num);
+//         }
+//     }
+// }
+

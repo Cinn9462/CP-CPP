@@ -1,66 +1,59 @@
-#define ll long long
-#define pb push_back 
-#define v vector
-#define p pair
-#define fileread(file) freopen(((string) file + ".in").c_str(), "r", stdin); freopen(((string) file + ".out").c_str(), "w", stdout)
-#define INF 1000000000000000000
-#define inf 1000000001
-#define MP(x, y) make_pair(x, y)
-#define F first
-#define S second
-#define For(i, end) for (ll i = 0; i < end; i++)
-#define f0r(i, begin, end) for (ll i = begin; i < end; i++) 
-#define nl "\n"
-#define ss " "
-#define un_map unordered_map
-#define un_set unordered_set
-
-#include <bits/stdc++.h>
+#include <iostream>
 using namespace std;
+#define MAX 1000
 
-ostream& operator<<(ostream& os, pair<ll, ll>& p) {
-    return os << "[" << p.F << " " << p.S << "]";
+int tree[MAX] = {0};  // To store segment tree
+int lazy[MAX] = {0};  // To store pending updates
+
+void updateRangeUtil(int si, int ss, int se, int us, int ue, int diff) {
+    if (lazy[si] != 0) {
+
+        tree[si] += (se-ss+1)*lazy[si];
+
+        if (ss != se) {
+            lazy[si*2 + 1]   += lazy[si];
+            lazy[si*2 + 2]   += lazy[si];
+        }
+        lazy[si] = 0;
+    }
+
+    if (ss>se || ss>ue || se<us) return;
+
+    if (ss>=us && se<=ue) {
+        tree[si] += (se-ss+1)*diff;
+
+        if (ss != se) {
+            lazy[si*2 + 1]   += diff;
+            lazy[si*2 + 2]   += diff;
+        }
+        return;
+    }
+
+
+    int mid = (ss+se)/2;
+    updateRangeUtil(si*2+1, ss, mid, us, ue, diff);
+    updateRangeUtil(si*2+2, mid+1, se, us, ue, diff);
+
+    tree[si] = tree[si*2+1] + tree[si*2+2];
 }
-ostream& operator<<(ostream& os, v<ll>& arr) {
-    for (ll ___a : arr) {
-        os << ___a << " ";
-    }
-    return os;
-}
-ostream& operator<<(ostream& os, deque<ll>& arr) {
-    for (ll ___a : arr) {
-        os << ___a << " ";
-    }
-    return os;
-}
-struct PairHash {
-    size_t operator()(const pair<ll,ll>& p) const {
-        return hash<ll>()(p.F) ^ (hash<ll>()(p.S) << 1);
-    }
-};
 
-int main() {
-    ios::sync_with_stdio(0); cin.tie(0);
-    int N; cin >> N;
-    v<ll> nums(N);
-    For(i, N) {
-        cin >> nums[i];
-        nums[i] %= N;
-        nums[i] += N;
-        nums[i] %= N;
+int getSumUtil(int ss, int se, int qs, int qe, int si) {
+    if (lazy[si] != 0) {
+        tree[si] += (se-ss+1)*lazy[si];
+        if (ss != se) {
+            lazy[si*2+1] += lazy[si];
+            lazy[si*2+2] += lazy[si];
+        }
+
+        lazy[si] = 0;
     }
 
-    v<ll> prefix(N + 1, 0);
-    f0r(i, 1, N + 1) {
-        prefix[i] = (prefix[i - 1] + nums[i - 1]) % N;
-    }
+    if (ss>se || ss>qe || se<qs) return 0;
 
-    map<ll, ll> remainder;
-    ll count = 0;
-    for (ll n : prefix) {
-        count += remainder[n];
-        remainder[n]++;
-    }
+    if (ss>=qs && se<=qe)
+        return tree[si];
 
-    cout << count;
+    int mid = (ss + se)/2;
+    return getSumUtil(ss, mid, qs, qe, 2*si+1) +
+           getSumUtil(mid+1, se, qs, qe, 2*si+2);
 }
