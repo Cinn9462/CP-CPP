@@ -13,7 +13,7 @@ using namespace std;
 #define nl "\n"
 #define ss " "
 #define all(x) x.begin(), x.end()
-#define popcount(x) __builtin_popcount(x)
+#define popcount(x) __builtin_popcountll(x)
 
 ostream& operator<<(ostream& os, v<ll>& arr) {
     for (ll ___a : arr) {
@@ -21,67 +21,67 @@ ostream& operator<<(ostream& os, v<ll>& arr) {
     }
     return os;
 }
-
+    
 int main () {
     ios::sync_with_stdio(false); 
     cin.tie(nullptr);
-    int N, M; cin >> N >> M; // vertices, edges
+    ll N, M; cin >> N >> M; // vertices, edges
     
     v<ll> adj(N);
-    for (int i = 0; i < M; i++) {
-        int x, y; cin >> x >> y;
-        adj[x] |= (1 << y);
-        adj[y] |= (1 << x);
+    for (ll i = 0; i < M; i++) {
+        ll x, y; cin >> x >> y;
+        adj[x] |= (1LL << y);
+        adj[y] |= (1LL << x);
     }
 
-    int mid = N / 2;
+    ll mid = N / 2;
 
-    v<int> dp(1 << mid);
+    v<ll> dp(1LL << mid);
 
-    for(int bitmask = 0; bitmask < (1 << mid); bitmask++) {
+    for(ll bitmask = 0; bitmask < (1LL << mid); bitmask++) {
         ll adjmask = 0; // tracks all neighbors
-        for(int i = 0; i < mid; i++) {
-            if ((bitmask >> i) & 1) adjmask |= adj[i];
+        for(ll i = 0; i < mid; i++) {
+            if ((bitmask >> i) & 1LL) adjmask |= adj[i];
         }
 
-        if ((bitmask & (adjmask & ((1 << mid) - 1))) == 0) { // is a independent set
+        if ((bitmask & (adjmask & ((1LL << mid) - 1LL))) == 0) { // is a independent set
             dp[bitmask] = bitmask;
         }
 
-        for(int i = 0; i < mid; i++) {
-            if ((bitmask >> i) & 1) dp[bitmask] = (popcount(dp[bitmask]) > popcount(dp[bitmask ^ (1 << i)])) ? dp[bitmask] : dp[bitmask ^ (1 << i)];
+        for(ll i = 0; i < mid; i++) {
+            if ((bitmask >> i) & 1LL) dp[bitmask] = (popcount(dp[bitmask]) > popcount(dp[bitmask ^ (1LL << i)])) ? dp[bitmask] : dp[bitmask ^ (1LL << i)];
         }
     }
 
     ll max_bm = 0;
 
-    // for (int i : dp) {
+    // for (ll i : dp) {
     //     cout << i << ss;
     // }
     // cout << nl;  
 
-    for(int bitmask = 0; bitmask < (1 << (N - mid)); bitmask++) {
+    for(ll bitmask = 0; bitmask < (1LL << (N - mid)); bitmask++) {
         ll adjmask = 0; // tracks all neighbors
-        for(int i = 0; i < (N - mid); i++) {
-            if ((bitmask >> i) & 1) adjmask |= adj[i + mid];
+        for(ll i = 0; i < (N - mid); i++) {
+            if ((bitmask >> i) & 1LL) adjmask |= adj[i + mid];
         }
 
         if ((bitmask & (adjmask >> mid)) == 0) {
 
-            // for(int i = 0; i < N; i++) {
-            //     cout << ((adjmask >> i) & 1);
+            // for(ll i = 0; i < N; i++) {
+            //     cout << ((adjmask >> i) & 1LL);
             // }
             // cout << nl;
 
             adjmask = ~adjmask;
-            adjmask &= ((1 << mid) - 1);
+            adjmask &= ((1LL << mid) - 1LL);
             // cout << bitmask << ss << adjmask << nl;
             max_bm = (popcount(max_bm) > popcount(bitmask << mid | dp[adjmask])) ? max_bm : bitmask << mid | dp[adjmask];
         }
     }
 
     cout << popcount(max_bm) << nl;
-    for(int i = 0; i < N; i++) {
-        if ((max_bm >> i) & 1) cout << i << ss;
+    for(ll i = 0; i < N; i++) {
+        if ((max_bm >> i) & 1LL) cout << i << ss;
     }
 }

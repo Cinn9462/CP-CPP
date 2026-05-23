@@ -34,5 +34,26 @@ struct PairHash {
 int main() {
     ios::sync_with_stdio(0); cin.tie(0);
 
+    ll N; cin >> N;
+    v<ll> nums(N);
+    For(i, N) cin >> nums[i];
+
+    v<v<ll>> dp(N, v<ll>(N, -1)); // [i, j] is inclusive interval
+    For(sz, N) { // size of interval
+        For(i, N - sz) {
+            if (sz == 0) {
+                dp[i][i] = 0LL;
+                continue;
+            }
+
+            ll min_size = LLONG_MAX;
+            ll total = accumulate(nums.begin() + i, nums.begin() + i + sz + 1, 0LL);
+            For(k, sz) {
+                min_size = min(dp[i][i + k] + dp[i + k + 1][i + sz], min_size);
+            }
+            dp[i][i + sz] = total + ((min_size == LLONG_MAX) ? 0LL : min_size);
+        }
+    }
     
+    cout << dp[0][N - 1] << nl;
 }
