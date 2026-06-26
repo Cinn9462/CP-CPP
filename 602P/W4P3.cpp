@@ -1,60 +1,41 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#define ll long long
-#define pb push_back 
-#define v vector
-#define p pair
-#define F first
-#define S second
-#define For(i, end) for (ll i = 0; i < end; i++)
-#define roF(i, begin) for (ll i = begin; i >= 0; i--)
-#define FOR(i, begin, end) for (ll i = begin; i < end; i++) 
-#define ROF(i, begin, end) for (ll i = begin; i > end; i--)
-#define nl "\n"
-#define ss " "
-#define all(x) x.begin(), x.end()
-#define popcount(x) __builtin_popcountll(x)
-#define fileread(file) ifstream fin; fin.open((string)file + ".in"); ofstream fout; fout.open((string)file + ".out")
-
-ostream& operator<<(ostream& os, v<ll>& arr) {
-    for (ll ___a : arr) {
-        os << ___a << " ";
-    }
-    return os;
-}
-
 struct Friend {
-    ll P, C, X;
-    Friend(ll p, ll c, ll x) : P(p), C(c), X(x) {}
-    Friend() : P(0), C(0), X(0) {}
+    int popularity, cost, bribe;
+    Friend() : popularity(0), cost(0), bribe(0) {}
 };
 
-bool xsort(Friend f1, Friend f2) {
-    return f1.X < f2.X;
+bool x_sort(Friend f1, Friend f2) {
+    return f1.bribe < f2.bribe;
 }
 
 int main() {
     ios::sync_with_stdio(0); cin.tie(0);
-    ll N, C, X; cin >> N >> C >> X; // c = moonies, x = ice creams
-    v<Friend> nums(N);
-    For(i, N) cin >> nums[i].P >> nums[i].C >> nums[i].X;
-    sort(all(nums), xsort);
+    int N, moonies, ice_cream; 
+    cin >> N >> moonies >> ice_cream;
+    vector<Friend> friends(N);
+    for(int i = 0; i < N; i++) cin >> friends[i].popularity >> friends[i].cost >> friends[i].bribe;
+    sort(friends.begin(), friends.end(), x_sort); // sort by lowest cost to bribe
 
-    v<ll> dp(C + X + 1, -1);
+    vector<long long> dp(moonies + ice_cream + 1, -1); // -1 represents unvisited
     dp[0] = 0;
 
-    for (Friend c : nums) {
-        roF(i, C + X - c.C) {
+    for (Friend f : friends) {
+        for (int i = moonies + ice_cream - f.cost; i >= 0; i--) { // prevent out-of-bounds indexing
+            // skip if unvisited
             if (dp[i] == -1) continue;
-            // spending all moonies
-            if (i >= X) dp[i + c.C] = max(dp[i + c.C], dp[i] + c.P);
-            // spending all ice creams
-            else if (X - i >= c.C * c.X) dp[i + c.C * c.X] = max(dp[i + c.C * c.X], dp[i] + c.P);
-            // spending a hybrid amount
-            else dp[X + (c.C - ((X - i) / c.X))] = max(dp[X + (c.C - ((X - i) / c.X))], dp[i] + c.P);
+
+            // spending only moonies
+            if (i >= ice_cream) dp[i + f.cost] = max(dp[i + f.cost], dp[i] + f.popularity);
+
+            // spending only ice creams
+            else if (ice_cream - i >= f.cost * f.bribe) dp[i + f.cost * f.bribe] = max(dp[i + f.cost * f.bribe], dp[i] + f.popularity); 
+            
+            // spending a mixed amount of moonies and ice creams
+            else if (ice_cream + (f.cost - ((ice_cream - i) / f.bribe)) <= moonies + ice_cream) dp[ice_cream + (f.cost - ((ice_cream - i) / f.bribe))] = max(dp[ice_cream + (f.cost - ((ice_cream - i) / f.bribe))], dp[i] + f.popularity);
         }
     }
 
-    cout << *max_element(all(dp)) << nl;
+    cout << *max_element(dp.begin(), dp.end());
 }
