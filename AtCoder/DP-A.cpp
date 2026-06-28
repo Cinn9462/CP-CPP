@@ -19,7 +19,7 @@ int main() {
 
     v<ll> dp(N, LLONG_MAX);
     dp[0] = 0;
-
+    
     For(i, N ) {
         if (i + 1 < N) {
             dp[i + 1] = min(dp[i + 1], dp[i] + abs(cost[i] - cost[i + 1]));
