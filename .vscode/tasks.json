@@ -2,12 +2,18 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "g++ build and run",
+            "label": "build and run",
             "type": "shell",
             "command": "g++",
             "args": [
+                "-g",
                 "-std=c++17",
                 "-Wall",
+                "-Wextra",
+                "-Wno-sign-compare",
+                "-Wno-unused-variable",
+                "-Wno-unused-parameter",
+                "-Wno-unused-but-set-variable",
                 "${file}",
                 "-o",
                 "${fileDirname}\\${fileBasenameNoExtension}.exe"
@@ -18,6 +24,14 @@
             },
             "problemMatcher": ["$gcc"],
             "detail": "Compile C++ file and create executable"
+        },
+        {
+            "label": "Run C++",
+            "type": "shell",
+            "command": "${fileDirname}\\${fileBasenameNoExtension}.exe",
+            "dependsOn": ["build and run"],
+            "problemMatcher": [],
+            "detail": "Run the compiled executable"
         }
     ]
 }
