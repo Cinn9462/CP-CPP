@@ -9,7 +9,7 @@
             "args": [],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
-            "externalConsole": false,  // Uses VS Code's integrated terminal
+            "externalConsole": false,
             "MIMode": "gdb",
             "miDebuggerPath": "C:/msys64/mingw64/bin/gdb.exe",
             "preLaunchTask": "build and run",
@@ -22,14 +22,14 @@
             ]
         },
         {
-            "name": "Run (external console)",
+            "name": "Run (with console)",
             "type": "cppdbg",
             "request": "launch",
             "program": "${fileDirname}\\${fileBasenameNoExtension}.exe",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
-            "externalConsole": true,  // Opens a separate terminal window
+            "externalConsole": false,
             "MIMode": "none",         // No debugger attached
             "preLaunchTask": "build and run"
         }
