@@ -26,7 +26,7 @@ int main () {
     cin.tie(nullptr);
 
     ll N; cin >> N;
-    v<unordered_set<ll>> nums(N);
+    v<ll> nums(N);
     For (i, N) cin >> nums[i];
 
     v<v<ll>> segtree(4*N);
